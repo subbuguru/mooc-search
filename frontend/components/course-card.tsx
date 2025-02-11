@@ -27,7 +27,7 @@ export default function CourseCard({ title, description, link, tags }: CourseCar
       </CardContent>
       <CardFooter className="p-4 pt-0">
         <Link href={link} target="_blank" className="text-sm font-semibold hover:underline">
-          View Course
+          Link to Course
         </Link>
       </CardFooter>
     </Card>
