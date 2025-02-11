@@ -1,6 +1,8 @@
 //import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import CourseCard from "./components/course-card"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
 
 export default function Page() {
   return (
@@ -27,9 +29,14 @@ export default function Page() {
                 Search MOOCs with a Word2Vec model trained on over 4000 online courses from Harvard, MIT, and other top providers.
                 </p>
               </div>
-              <div className="space-x-4">
-                <p>search bar here</p>
-              </div>
+              <div className="flex items-center p-2 gap-4">
+      <Input
+        type="text"
+        placeholder="Python Data Analytics"
+        className="flex-1 text-gray-900 dark:text-white bg-transparent border-none focus:ring-0"
+      />
+      <Button>Search</Button>
+    </div>
             </div>
           </div>
         </section>
