@@ -2,12 +2,13 @@ import Link from "next/link"
 import CourseCard from "../components/course-card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { ThemeToggle } from "@/components/theme-toggle"
 
 export default function Page() {
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="flex h-14 items-center justify-center">
+        <div className="flex h-14 items-center justify-between">
           <div className="container">
             <div className="px-8 hidden md:flex">
               <Link className="mr-6 flex items-center space-x-2" href="/">
@@ -15,6 +16,10 @@ export default function Page() {
               </Link>
             </div>
           </div>
+          <div className="px-8">
+          <ThemeToggle />
+          </div>
+
         </div>
       </header>
 
@@ -34,7 +39,7 @@ export default function Page() {
                 <Input
                   type="text"
                   placeholder="Python Data Analytics" 
-                  className="flex-1 text-gray-900 dark:text-white bg-transparent border-none focus:ring-0"
+                  className="flex-1 text-gray-900 dark:text-white bg-transparent focus:ring-0"
                 />
                 <Button>Search</Button>
               </div>
@@ -47,22 +52,28 @@ export default function Page() {
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-12">Results</h2>
                 <div className="grid gap-6">
                   <CourseCard
-                    title="E-commerce Platform"
-                    description="A full-stack e-commerce platform built with Next.js, Prisma, and Stripe integration."
+                    title="CS50"
+                    description="Harvard Intro to Computer Science"
                     link="https://github.com"
-                    tags={["Next.js", "Prisma", "Stripe"]}
+                    tags={["EdX - Harvard"]}
                   />
                   <CourseCard
-                    title="Task Management App"
-                    description="A real-time task management application with team collaboration features."
+                    title="CS50"
+                    description="Harvard Intro to Computer Science"
                     link="https://github.com"
-                    tags={["React", "Node.js", "Socket.io"]}
+                    tags={["EdX - Harvard"]}
                   />
-                  <CourseCard
-                    title="AI Chat Interface"
-                    description="An AI-powered chat interface with natural language processing capabilities."
+                                    <CourseCard
+                    title="CS50"
+                    description="Harvard Intro to Computer Science"
                     link="https://github.com"
-                    tags={["OpenAI", "Next.js", "TailwindCSS"]}
+                    tags={["EdX - Harvard"]}
+                  />
+                                    <CourseCard
+                    title="CS50"
+                    description="Harvard Intro to Computer Science"
+                    link="https://github.com"
+                    tags={["EdX - Harvard"]}
                   />
                 </div>
               </div>
