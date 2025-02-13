@@ -1,10 +1,50 @@
-import Link from "next/link"
-import CourseCard from "../components/course-card"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { ThemeToggle } from "@/components/theme-toggle"
+"use client";
+import { useState } from 'react';
+import Link from "next/link";
+import CourseCard from "../components/course-card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
+
+interface Course {
+  id: string;
+  name: string;
+  topic: string;
+  link: string;
+  provider: string;
+}
 
 export default function Page() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [results, setResults] = useState<Course[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSearch = async () => {
+    if (!searchQuery.trim()) return;
+    
+    //mock query
+    setIsLoading(true);
+    setTimeout(() => {
+      setResults([
+        {
+          id: '1',
+          name: 'CS50',
+          topic: 'Harvard Intro to Computer Science',
+          link: 'https://example.com',
+          provider: 'EdX - Harvard'
+        },
+        {
+          id: '2',
+          name: 'Machine Learning',
+          topic: 'Introduction to ML with Python',
+          link: 'https://example.com',
+          provider: 'Coursera - Stanford'
+        }
+      ]);
+      setIsLoading(false);
+    }, 1000);
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -17,9 +57,8 @@ export default function Page() {
             </div>
           </div>
           <div className="px-8">
-          <ThemeToggle />
+            <ThemeToggle />
           </div>
-
         </div>
       </header>
 
@@ -32,16 +71,21 @@ export default function Page() {
                   MOOC Search
                 </h1>
                 <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
-                  Search MOOCs with a Word2Vec model trained on over 4000 online courses from Harvard, MIT, and other top providers.
+                  Search MOOCs with AI-powered recommendations.
                 </p>
               </div>
               <div className="flex items-center p-2 gap-4 w-full max-w-[700px]">
                 <Input
                   type="text"
-                  placeholder="Python Data Analytics" 
+                  placeholder="Python Data Analytics"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
                   className="flex-1 text-gray-900 dark:text-white bg-transparent focus:ring-0"
                 />
-                <Button>Search</Button>
+                <Button onClick={handleSearch} disabled={isLoading}>
+                  {isLoading ? 'Searching...' : 'Search'}
+                </Button>
               </div>
             </div>
           </section>
@@ -50,32 +94,27 @@ export default function Page() {
             <div className="flex justify-center w-full">
               <div className="container">
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-12">Results</h2>
-                <div className="grid gap-6">
-                  <CourseCard
-                    title="CS50"
-                    description="Harvard Intro to Computer Science"
-                    link="https://github.com"
-                    tags={["EdX - Harvard"]}
-                  />
-                  <CourseCard
-                    title="CS50"
-                    description="Harvard Intro to Computer Science"
-                    link="https://github.com"
-                    tags={["EdX - Harvard"]}
-                  />
-                                    <CourseCard
-                    title="CS50"
-                    description="Harvard Intro to Computer Science"
-                    link="https://github.com"
-                    tags={["EdX - Harvard"]}
-                  />
-                                    <CourseCard
-                    title="CS50"
-                    description="Harvard Intro to Computer Science"
-                    link="https://github.com"
-                    tags={["EdX - Harvard"]}
-                  />
-                </div>
+                {isLoading ? (
+                  <div className="text-center">Searching courses...</div>
+                ) : results.length > 0 ? (
+                  <div className="grid gap-6">
+                    {results.map((course) => (
+                      <CourseCard
+                        key={course.id}
+                        title={course.name}
+                        description={course.topic}
+                        link={course.link}
+                        tags={[course.provider]}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center">
+                    <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
+                      No results yet.
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           </section>
@@ -90,5 +129,5 @@ export default function Page() {
         </div>
       </footer>
     </div>
-  )
+  );
 }
