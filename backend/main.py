@@ -17,14 +17,14 @@ nltk.download('wordnet')
 nltk.download('stopwords')
 
 # Load and preprocess data
-dataMit = pd.read_csv("/kaggle/input/dataset-of-1200-coursera-courses/MIT ocw.csv")
+dataMit = pd.read_csv("/data/dataset-of-1200-coursera-courses/MIT ocw.csv")
 dataMit.columns = map(str.lower, dataMit.columns)
 dataMit.rename(columns={'name ': 'name', 'course link': 'link'}, inplace=True)
 dataMit['text'] = dataMit['name'] + " " + dataMit['topic'] 
 dataMit['provider'] = 'Massachussets Institute of Technology'
 dataMit = dataMit[['name', 'topic', 'link', 'provider', 'text']]
 
-dataHarvard = pd.read_csv("/kaggle/input/dataset-of-1200-coursera-courses/Harvard_university.csv")
+dataHarvard = pd.read_csv("/data/dataset-of-1200-coursera-courses/Harvard_university.csv")
 dataHarvard.columns = map(str.lower, dataHarvard.columns)
 dataHarvard.rename(columns={'link to course': 'link', 'about': 'topic'}, inplace=True)
 dataHarvard = dataHarvard[dataHarvard['price'] == 'Free']
@@ -32,14 +32,14 @@ dataHarvard['text'] = dataHarvard['name'] + " " + dataHarvard['topic']
 dataHarvard['provider'] = 'Harvard University'
 dataHarvard = dataHarvard[['name', 'topic', 'link', 'provider', 'text']]
 
-dataEdx = pd.read_csv("/kaggle/input/edx-courses-dataset-2021/EdX.csv")
+dataEdx = pd.read_csv("/data/edx-courses-dataset-2021/EdX.csv")
 dataEdx.columns = map(str.lower, dataEdx.columns)
 dataEdx["topic"] = dataEdx['about'] + '. ' + dataEdx['course description']
 dataEdx["provider"] = 'edX - ' + dataEdx['university']
 dataEdx['text'] = dataEdx['name'] + " " + dataEdx["topic"]
 dataEdx = dataEdx[['name', 'topic', 'link', 'provider', 'text']]
 
-dataUdemy = pd.read_csv("/kaggle/input/udemy-course-dataset-categories-ratings-and-trends/udemy_courses.csv")
+dataUdemy = pd.read_csv("/data/udemy-course-dataset-categories-ratings-and-trends/udemy_courses.csv")
 dataUdemy.columns = map(str.lower, dataUdemy.columns)
 dataUdemy.rename(columns={'title': 'name', 'headline': 'topic', 'url': 'link'}, inplace=True)
 dataUdemy = dataUdemy[dataUdemy['is_paid'] == False]
@@ -48,7 +48,7 @@ dataUdemy = dataUdemy[dataUdemy['rating'] > 4.5]
 dataUdemy['text'] = dataUdemy['name'] + " " + dataUdemy['topic']
 dataUdemy = dataUdemy[['name', 'topic', 'link', 'provider', 'text']]
 
-dataCoursera = pd.read_csv("/kaggle/input/coursera-free-courses-dataset/coursera.csv")
+dataCoursera = pd.read_csv("/data/coursera-free-courses-dataset/coursera.csv")
 dataCoursera.rename(columns={'title': 'name', 'skills': 'topic', 'url': 'link'}, inplace=True)
 dataCoursera = dataCoursera[dataCoursera['price'] == 'Free']
 dataCoursera['text'] = dataCoursera['name'] + " " + np.where(pd.notna(dataCoursera['topic']), dataCoursera['topic'], "")
