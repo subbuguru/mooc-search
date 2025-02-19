@@ -21,7 +21,14 @@ export default function Page() {
   const apiUrl = 'https://ideal-acorn-7j4rxgp49v53p5gx-8000.app.github.dev/';
 
   const handleSearch = async (query: string) => {
-    if (!searchQuery.trim()) return;
+    console.log(query)
+    if (!searchQuery.trim()) {
+      console.log('query empty')
+      return;
+    }
+
+    
+    setIsLoading(true);
 
     const queryUrl = apiUrl + '?query=' + query
     console.log(queryUrl)
