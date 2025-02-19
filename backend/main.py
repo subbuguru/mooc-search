@@ -17,8 +17,9 @@ import re
 nltk.download('punkt')
 nltk.download('wordnet')
 nltk.download('stopwords')
+nltk.download('punkt_tab')
 
-# Read in data with embeddings
+# Read in data with embeddings (update in the future)
 courses = pd.read_csv('backend/data/courses.csv')
 embeddings = pd.read_csv('backend/data/embeddings.csv')
 
@@ -39,8 +40,8 @@ from fastapi import FastAPI
 app = FastAPI()
 
 # Recommendation endpoint
-@app.get("/recommend")
-async def recommend(query: str):
+@app.get("/")
+async def recommend(query: str = "Python"):
     cleaned_input = clean_text(query)
     input_embedding = model.encode([cleaned_input])
     similarities = cosine_similarity(input_embedding, embeddings)[0]
