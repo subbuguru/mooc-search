@@ -17,8 +17,8 @@ nltk.download('wordnet')
 nltk.download('stopwords')
 
 # Read in data with embeddings
-courses = pd.read_csv('data/courses.csv')
-embeddings = np.load('data/embeddings.csv')
+courses = pd.read_csv('backend/data/courses.csv')
+embeddings = np.load('backend/data/embeddings.csv')
 
 # Initialize the model
 model = SentenceTransformer('all-MiniLM-L6-v2')
