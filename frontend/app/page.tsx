@@ -20,11 +20,11 @@ export default function Page() {
   const [isLoading, setIsLoading] = useState(false);
   const apiUrl = 'https://ideal-acorn-7j4rxgp49v53p5gx-8000.app.github.dev/';
 
-  const handleSearch = async () => {
+  const handleSearch = async (query: string) => {
     if (!searchQuery.trim()) return;
     
     try {
-      const response = await fetch(apiUrl + '?query=' + 'Python');
+      const response = await fetch(apiUrl + '?query=' + query);
       console.log(response);
 
       if (!response.ok) {
