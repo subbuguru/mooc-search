@@ -1,5 +1,7 @@
 # Required pip installations:
 # pip install fastapi uvicorn pandas numpy sentence-transformers scikit-learn nltk kaleido
+# uvicorn backend.main:app --reload
+
 
 import pandas as pd
 import numpy as np
