@@ -17,40 +17,43 @@ interface Course {
 export default function Page() {
   const [searchQuery, setSearchQuery] = useState("");
   const [results, setResults] = useState<Course[]>([]);
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const apiUrl = 'https://ideal-acorn-7j4rxgp49v53p5gx-8000.app.github.dev/';
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-  const handleSearch = async (query: string) => {
-    console.log(query)
+  const handleSearch = async (searchQuery: string) => {
+    console.log(apiUrl)
     if (!searchQuery.trim()) {
-      console.log('query empty')
       return;
     }
-
     
     setIsLoading(true);
-
-    const queryUrl = apiUrl + '?query=' + query
-    console.log(queryUrl)
+    setError(""); // Reset error state
     
     try {
-      const response = await fetch(queryUrl);
-      console.log(response);
-
+      const response = await fetch(`${apiUrl}?query=${encodeURIComponent(searchQuery)}`);
+      
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const json = await response.json();
+      
+      // Check if we got valid results
+      if (!Array.isArray(json)) {
+        throw new Error('Invalid response format');
+      }
+      
       setResults(json);
-    } catch (e) {
-      console.log(e)
+    } catch (e) { 
+      console.error('Search error:', e); 
+      setError('Search error');
+      setResults([]); 
     } finally {
       setIsLoading(false);
     }
 
-    
-  };
+};
 
   return (
     <div className="min-h-screen bg-background">
@@ -100,13 +103,15 @@ export default function Page() {
             <div className="flex justify-center w-full">
               <div className="container">
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-12">Results</h2>
-                {isLoading ? (
-                  <div className="text-center">Searching courses...</div>
+                {error != "" ? (
+                  <div className="text-center mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">An error occured: {error}</div>
+                ) : isLoading ? (
+                  <div className="text-center mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">Searching courses...</div>
                 ) : results.length > 0 ? (
                   <div className="grid gap-6">
                     {results.map((course) => (
                       <CourseCard
-                        key={course.id}
+                        key={course.name}
                         title={course.name}
                         description={course.topic}
                         link={course.link}

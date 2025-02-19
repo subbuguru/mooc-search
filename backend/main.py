@@ -37,7 +37,16 @@ def clean_text(text):
 
 # Initialize FastAPI app
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=False,  
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Recommendation endpoint
 @app.get("/")
@@ -47,4 +56,4 @@ async def recommend(query: str = "Python"):
     similarities = cosine_similarity(input_embedding, embeddings)[0]
     top_indices = np.argsort(similarities)[-5:][::-1]
     recommendations = courses.iloc[top_indices][['name', 'topic', 'link', 'provider']]
-    return recommendations.to_dict('records')
+    return recommendations.replace({np.nan: ""}).to_dict('records') # In the future, handle this within the initial embeddings.
