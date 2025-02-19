@@ -22,9 +22,12 @@ export default function Page() {
 
   const handleSearch = async (query: string) => {
     if (!searchQuery.trim()) return;
+
+    const queryUrl = apiUrl + '?query=' + query
+    console.log(queryUrl)
     
     try {
-      const response = await fetch(apiUrl + '?query=' + query);
+      const response = await fetch(queryUrl);
       console.log(response);
 
       if (!response.ok) {
@@ -77,10 +80,9 @@ export default function Page() {
                   placeholder="Python Data Analytics"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
                   className="flex-1 text-gray-900 dark:text-white bg-transparent focus:ring-0"
                 />
-                <Button onClick={handleSearch} disabled={isLoading}>
+                <Button onClick={()=>handleSearch(searchQuery)} disabled={isLoading}>
                   {isLoading ? 'Searching...' : 'Search'}
                 </Button>
               </div>
