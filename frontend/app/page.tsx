@@ -18,31 +18,28 @@ export default function Page() {
   const [searchQuery, setSearchQuery] = useState("");
   const [results, setResults] = useState<Course[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const apiUrl = 'https://ideal-acorn-7j4rxgp49v53p5gx-8000.app.github.dev/';
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) return;
     
-    //mock query
-    setIsLoading(true);
-    setTimeout(() => {
-      setResults([
-        {
-          id: '1',
-          name: 'CS50',
-          topic: 'Harvard Intro to Computer Science',
-          link: 'https://example.com',
-          provider: 'EdX - Harvard'
-        },
-        {
-          id: '2',
-          name: 'Machine Learning',
-          topic: 'Introduction to ML with Python',
-          link: 'https://example.com',
-          provider: 'Coursera - Stanford'
-        }
-      ]);
+    try {
+      const response = await fetch(apiUrl + '?query=' + 'Python');
+      console.log(response);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const json = await response.json();
+      setResults(json);
+    } catch (e) {
+      console.log(e)
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
+
+    
   };
 
   return (
