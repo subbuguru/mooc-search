@@ -61,9 +61,6 @@ export default function Page() {
         <div className="flex h-14 items-center justify-between">
           <div className="container">
             <div className="px-8 hidden md:flex">
-              <Link className="mr-6 flex items-center space-x-2" href="/">
-                <span className="hidden font-bold sm:inline-block">MOOC Search</span>
-              </Link>
             </div>
           </div>
           <div className="px-8">
@@ -132,13 +129,12 @@ export default function Page() {
         </div>
       </main>
 
-      <footer className="border-t">
-        <div className="flex justify-center w-full">
-          <div className="container flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6">
-            <p className="text-xs text-gray-500 dark:text-gray-400">Dhruva Kumar</p>
-          </div>
-        </div>
-      </footer>
+      <footer className="border-t py-8">
+  <div className="container mx-auto text-center">
+    <p className="text-lg text-gray-500 dark:text-gray-400">© Dhruva Kumar 2025</p>
+  </div>
+</footer>
+        
     </div>
   );
 }
