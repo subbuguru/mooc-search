@@ -114,9 +114,9 @@ export default function Page() {
                   </div>
                 ) : results.length > 0 ? (
                   <div className="grid gap-6">
-                    {results.map((course) => (
+                    {results.map((course, index) => (
                       <CourseCard
-                        key={course.name}
+                        key={index}
                         title={course.name}
                         description={course.topic}
                         link={course.link}

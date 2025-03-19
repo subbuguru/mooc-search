@@ -10,11 +10,15 @@ interface CourseCardProps {
 
 export default function CourseCard({ title, description, link, tags }: CourseCardProps) {
   return (
-    <Card className="overflow-hidden">
+    <Link href={link} target="_blank" className="transform transition-transform hover:scale-105">
+      <Card className="overflow-hidden">
       <CardContent className="p-4">
         <h3 className="font-semibold text-xl mb-2">{title}</h3>
         <p className="text-sm text-muted-foreground mb-4">{description}</p>
-        <div className="flex flex-wrap gap-2">
+
+      </CardContent>
+      <CardFooter className="p-4 pt-0">
+      <div className="flex flex-wrap gap-2">
           {tags.map((tag) => (
             <span
               key={tag}
@@ -24,13 +28,10 @@ export default function CourseCard({ title, description, link, tags }: CourseCar
             </span>
           ))}
         </div>
-      </CardContent>
-      <CardFooter className="p-4 pt-0">
-        <Link href={link} target="_blank" className="text-sm font-semibold hover:underline">
-          Link to Course
-        </Link>
       </CardFooter>
     </Card>
+    </Link>
+    
   )
 }
 

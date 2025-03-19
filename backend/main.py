@@ -1,6 +1,6 @@
 # Required pip installations:
 # pip install fastapi uvicorn pandas numpy sentence-transformers scikit-learn nltk kaleido
-# uvicorn backend.main:app --reload
+# uvicorn main:app --reload
 
 
 import pandas as pd
@@ -20,8 +20,8 @@ nltk.download('stopwords')
 nltk.download('punkt_tab')
 
 # Read in data with embeddings (update in the future)
-courses = pd.read_csv('backend/data/courses.csv')
-embeddings = pd.read_csv('backend/data/embeddings.csv')
+courses = pd.read_csv('data/courses.csv')
+embeddings = pd.read_csv('data/embeddings.csv')
 
 # Initialize the model
 model = SentenceTransformer('all-MiniLM-L6-v2')
