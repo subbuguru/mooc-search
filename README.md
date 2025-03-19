@@ -1,6 +1,12 @@
 # MOOC Search
 
-MOOC Search is a project designed to help users find Massive Open Online Courses (MOOCs) from various providers. This is my senior seminar project built with FastAPI and Next.js.
+## Image
+
+<img width="2284" alt="mooc-search copy" src="https://github.com/user-attachments/assets/330c865f-aa34-473a-8005-43a2e22e3ca5" />
+
+## Overview
+
+MOOC Search is a project designed to help users find Massive Open Online Courses (MOOCs) from various providers. This is a project built with FastAPI and Next.js.
 
 ## Installation
 
