@@ -14,6 +14,8 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 import re
 
+from llama_index.core.agent import ReActAgent
+
 
 # Read in data with embeddings
 courses = pd.read_csv('backend/data/courses.csv')
@@ -42,12 +44,13 @@ def recommend(query: str = "Python"):
     return recommendations.replace({np.nan: ""}).to_dict('records')
 
 # Create an agent workflow with the recommend tool
-workflow = FunctionAgent(
+workflow = ReActAgent.from_tools(
     name="CourseRecommenderAgent",
     description="Useful for recommending courses based on a user query",
     tools=[recommend],
-    llm=Gemini(model="models/gemini-ultra", api_key="YOUR_API_KEY"),
-    system_prompt="You are a helpful assistant that can recommend courses based on user queries.",
+    llm=Gemini(model="models/gemini-2.0-flash", api_key="AIzaSyAG29iZsYDXK_kTH3HcOcXloCKnlLdhiRc"),
+    verbose=True,
+    system_prompt="You are a helpful assistant that can recommend courses based on user queries, attempting to call the tool multiple times as needed, and finally returning a structured curated ordered list of the best most relavent results from the recommend function",
 )
 
 async def main():
