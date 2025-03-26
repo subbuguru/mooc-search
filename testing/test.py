@@ -1,21 +1,20 @@
+# pip install llama-index
+
 import asyncio
-from llama_index.core.agent.workflow import FunctionAgent
-from llama_index.llms.ollama import Ollama
-from llama_index.core.agent.workflow import AgentStream
+from llama_index.core.agent.workflow import AgentWorkflow, ToolCallResult, AgentStream
 from llama_index.llms.gemini import Gemini
+from llama_index.llms.huggingface_api import HuggingFaceInferenceAPI
 
 import pandas as pd
 import numpy as np
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
-import nltk
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 import re
 
-from llama_index.core.agent import ReActAgent
-
+## RECOMMENDER CODE ##
 
 # Read in data with embeddings
 courses = pd.read_csv('backend/data/courses.csv')
@@ -43,23 +42,32 @@ def recommend(query: str = "Python"):
     recommendations = courses.iloc[top_indices][['name', 'topic', 'link', 'provider']]
     return recommendations.replace({np.nan: ""}).to_dict('records')
 
+print("loaded recommend function")
+
+## AGENT CODE ## 
+
+llm = HuggingFaceInferenceAPI(model_name="Qwen/Qwen2.5-Coder-32B-Instruct")
+
 # Create an agent workflow with the recommend tool
-workflow = ReActAgent.from_tools(
-    name="CourseRecommenderAgent",
-    description="Useful for recommending courses based on a user query",
-    tools=[recommend],
-    llm=Gemini(model="models/gemini-2.0-flash", api_key="AIzaSyAG29iZsYDXK_kTH3HcOcXloCKnlLdhiRc"),
+agent = AgentWorkflow.from_tools_or_functions(
+    tools_or_functions=[recommend],
+    llm=llm,
+    system_prompt="You are a helpful assistant that can recommend courses based on user queries, attempting to call the tool multiple times as needed, and finally curating the results, carefully thinking through the curation process to return a ordered list of the best most relavent results from the recommend function",
     verbose=True,
-    system_prompt="You are a helpful assistant that can recommend courses based on user queries, attempting to call the tool multiple times as needed, and finally returning a structured curated ordered list of the best most relavent results from the recommend function",
 )
+
+print("loaded workflow")
 
 async def main():
     # Run the agent
-    handler = workflow.run(user_msg="Can you recommend some Python courses?")
+    handler = agent.run(user_msg="Give a sequence of courses for me to learn data science with r and sql")
 
-    async for event in handler.stream_events():
-        if isinstance(event, AgentStream):
-            print(event.delta, end="", flush=True)
+    async for ev in handler.stream_events():
+        if isinstance(ev, ToolCallResult):
+            print("")
+            print("Called tool: ", ev.tool_name, ev.tool_kwargs, "=>", ev.tool_output)
+        elif isinstance(ev, AgentStream):  # showing the thought process
+            print(ev.delta, end="", flush=True)
 
 # Run the agent
 if __name__ == "__main__":
