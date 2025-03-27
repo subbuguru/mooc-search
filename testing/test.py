@@ -2,8 +2,8 @@
 
 import asyncio
 from llama_index.core.agent.workflow import AgentWorkflow, ToolCallResult, AgentStream
-from llama_index.llms.gemini import Gemini
-from llama_index.llms.huggingface_api import HuggingFaceInferenceAPI
+from llama_index.llms.google_genai import GoogleGenAI
+
 
 import pandas as pd
 import numpy as np
@@ -46,7 +46,10 @@ print("loaded recommend function")
 
 ## AGENT CODE ## 
 
-llm = HuggingFaceInferenceAPI(model_name="Qwen/Qwen2.5-Coder-32B-Instruct")
+llm = GoogleGenAI(
+    model="gemini-2.0-flash",
+    api_key="AIzaSyAG29iZsYDXK_kTH3HcOcXloCKnlLdhiRc",  
+)
 
 # Create an agent workflow with the recommend tool
 agent = AgentWorkflow.from_tools_or_functions(
