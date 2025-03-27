@@ -50,10 +50,10 @@ app.add_middleware(
 
 # Recommendation endpoint
 @app.get("/")
-async def recommend(query: str = "Python"):
+async def recommend(query: str):
     cleaned_input = clean_text(query)
     input_embedding = model.encode([cleaned_input])
     similarities = cosine_similarity(input_embedding, embeddings)[0]
     top_indices = np.argsort(similarities)[-5:][::-1]
     recommendations = courses.iloc[top_indices][['name', 'topic', 'link', 'provider']]
-    return recommendations.replace({np.nan: ""}).to_dict('records') # In the future, handle this within the initial embeddings.
+    return recommendations.replace({np.nan: ""}).to_dict('records')

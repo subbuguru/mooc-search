@@ -1,9 +1,6 @@
-# pip install llama-index
-
 import asyncio
-from llama_index.core.agent.workflow import AgentWorkflow, ToolCallResult, AgentStream
 from llama_index.llms.google_genai import GoogleGenAI
-
+from llama_index.core.agent.workflow import AgentWorkflow, ToolCallResult, AgentStream
 
 import pandas as pd
 import numpy as np
@@ -13,8 +10,6 @@ from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 import re
-
-## RECOMMENDER CODE ##
 
 # Read in data with embeddings
 courses = pd.read_csv('backend/data/courses.csv')
@@ -33,7 +28,7 @@ def clean_text(text):
     return " ".join(tokens)
 
 # Define the recommend function
-def recommend(query: str = "Python"):
+def recommend(query: str):
     """Useful for recommending courses based on a user query."""
     cleaned_input = clean_text(query)
     input_embedding = model.encode([cleaned_input])
@@ -42,29 +37,20 @@ def recommend(query: str = "Python"):
     recommendations = courses.iloc[top_indices][['name', 'topic', 'link', 'provider']]
     return recommendations.replace({np.nan: ""}).to_dict('records')
 
-print("loaded recommend function")
-
-## AGENT CODE ## 
-
-llm = GoogleGenAI(
-    model="gemini-2.0-flash",
-    api_key="AIzaSyAG29iZsYDXK_kTH3HcOcXloCKnlLdhiRc",  
-)
-
-# Create an agent workflow with the recommend tool
-agent = AgentWorkflow.from_tools_or_functions(
-    tools_or_functions=[recommend],
-    llm=llm,
-    system_prompt="You are a helpful assistant that can recommend courses based on user queries, attempting to call the tool multiple times as needed, and finally curating the results, carefully thinking through the curation process to return a ordered list of the best most relavent results from the recommend function",
-    verbose=True,
-)
-
-print("loaded workflow")
-
+# Replace tools and agent prompt
 async def main():
-    # Run the agent
-    handler = agent.run(user_msg="Give a sequence of courses for me to learn data science with r and sql")
+    llm = GoogleGenAI(
+        model="gemini-2.0-flash",
+        api_key="AIzaSyAG29iZsYDXK_kTH3HcOcXloCKnlLdhiRc",  # uses GOOGLE_API_KEY env var by default
+    )
 
+    agent = AgentWorkflow.from_tools_or_functions(
+        tools_or_functions=[recommend],
+        llm=llm,
+        system_prompt="You are a helpful assistant that can recommend courses based on user queries, attempting to call the tool multiple times as needed, and finally curating the results, carefully thinking through the curation process to return an ordered list of the best most relevant results from the recommend function.",
+    )
+
+    handler = agent.run(user_msg="Give a sequence of courses for me to learn data science with r and sql")
     async for ev in handler.stream_events():
         if isinstance(ev, ToolCallResult):
             print("")
@@ -72,6 +58,10 @@ async def main():
         elif isinstance(ev, AgentStream):  # showing the thought process
             print(ev.delta, end="", flush=True)
 
-# Run the agent
+    resp = await handler
+    print("\nFinal Response:", resp)
+
+
+
 if __name__ == "__main__":
     asyncio.run(main())
