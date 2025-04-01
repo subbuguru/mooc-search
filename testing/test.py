@@ -1,41 +1,22 @@
 import asyncio
 from llama_index.llms.google_genai import GoogleGenAI
 from llama_index.core.agent.workflow import AgentWorkflow, ToolCallResult, AgentStream
-
-import pandas as pd
-import numpy as np
-from sentence_transformers import SentenceTransformer
-from sklearn.metrics.pairwise import cosine_similarity
-from nltk.tokenize import word_tokenize
-from nltk.corpus import stopwords
-from nltk.stem import WordNetLemmatizer
-import re
-
-# Read in data with embeddings
-courses = pd.read_csv('backend/data/courses.csv')
-embeddings = pd.read_csv('backend/data/embeddings.csv')
-
-# Initialize the model
-model = SentenceTransformer('all-MiniLM-L6-v2')
-
-# Text cleaning function
-def clean_text(text):
-    lemma = WordNetLemmatizer()
-    text = re.sub("[^A-Za-z0-9 ]", "", str(text))
-    text = text.lower()
-    tokens = word_tokenize(text)
-    tokens = [lemma.lemmatize(word) for word in tokens if word not in stopwords.words("english")]
-    return " ".join(tokens)
+import requests  # Add this import for making HTTP requests
 
 # Define the recommend function
 def recommend(query: str):
     """Useful for recommending courses based on a user query."""
-    cleaned_input = clean_text(query)
-    input_embedding = model.encode([cleaned_input])
-    similarities = cosine_similarity(input_embedding, embeddings)[0]
-    top_indices = np.argsort(similarities)[-5:][::-1]
-    recommendations = courses.iloc[top_indices][['name', 'topic', 'link', 'provider']]
-    return recommendations.replace({np.nan: ""}).to_dict('records')
+    try:
+        # Make a GET request to the backend API
+        response = requests.get(
+            "https://verbose-space-giggle-vj7g5xq596qfwv-8000.app.github.dev/",
+            params={"query": query},
+        )
+        response.raise_for_status()  # Raise an exception for HTTP errors
+        return response.json()  # Return the JSON response from the API
+    except requests.exceptions.RequestException as e:
+        print(f"Error calling the API: {e}")
+        return [{"error": "Failed to fetch recommendations"}]
 
 # Replace tools and agent prompt
 async def main():
