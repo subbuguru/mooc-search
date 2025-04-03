@@ -60,12 +60,22 @@ export default function Page() {
         setStreamedText((prev) => prev + chunk); // Update streamed text for UI
       }
 
+      console.log("Full response:", fullText); // Debug: Log the full response
+
       // Extract the final JSON from the full text
       const answerIndex = fullText.lastIndexOf("Answer:");
       if (answerIndex !== -1) {
-        const jsonText = fullText.slice(answerIndex + 7).trim(); // Extract text after "Answer:"
-        const parsedResults = JSON.parse(jsonText); // Parse the JSON
-        setResults(parsedResults); // Update results state
+        let jsonText = fullText.slice(answerIndex + 7).trim();
+        jsonText = jsonText.replace(/'/g, '"');
+        console.log("Extracted JSON text:", jsonText); // Debug: Log the extracted JSON text
+
+        try {
+          const parsedResults = JSON.parse(jsonText); // Parse the JSON
+          setResults(parsedResults); // Update results state
+        } catch (e) {
+          console.error("JSON parsing error:", e); // Debug: Log JSON parsing errors
+          throw new Error("Invalid JSON format in the response.");
+        }
       } else {
         throw new Error("Final JSON output not found in the response.");
       }
@@ -134,7 +144,7 @@ export default function Page() {
                   <div className="text-center mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
                     {streamedText || "Searching courses..."}
                   </div>
-                ) : results.length > 0 ? (
+                ) : (
                   <div>
                     <div className="text-center mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
                       {streamedText || "Searching courses..."}
@@ -150,12 +160,6 @@ export default function Page() {
                         ))}
                       </div>
                     </div>
-                  </div>
-                ) : (
-                  <div className="text-center">
-                    <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
-                      No results yet.
-                    </p>
                   </div>
                 )}
               </div>
