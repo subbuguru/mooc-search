@@ -6,53 +6,60 @@
 
 ## Overview
 
-MOOC Search is a project designed to help users find Massive Open Online Courses (MOOCs) from various providers. This is a project built with FastAPI and Next.js.
+MOOC Search is a project designed to help users find Massive Open Online Courses (MOOCs) from various providers. The project utilizes vector embedding semantic search called as a tool by a LlamaIndex agent powered by Google's Gemini API. (Another LLM can be swapped in based on LLamaIndex documentation.) This is a project built with FastAPI and Next.js.
 
 ## Installation
 
 To install and run the project locally, follow these steps:
 
 1. Clone the repository:
-    ```bash
-    git clone https://github.com/subbuguru/mooc-search.git
-    cd mooc-search
-    ```
+
+   ```bash
+   git clone https://github.com/subbuguru/mooc-search.git
+   cd mooc-search
+   ```
 
 2. Set up the backend:
-    ```bash
-    # Install Python dependencies
-    pip install fastapi uvicorn pandas numpy sentence-transformers scikit-learn nltk kaleido
 
-    # Start the FastAPI server (from project root)
+   ```bash
+    # Open a new terminal and navigate to backend
     cd backend
-    uvicorn main:app --reload
-    ```
+
+   # Install Python dependencies
+   pip install -r requirements.txt
+
+   # create a .env file in the backend directory
+   echo "GEMINI_API_KEY=<goes here>" > .env
+
+   # Start the FastAPI server
+   uvicorn main:app --reload
+   ```
+
    The backend API will be running at `http://localhost:8000`
 
 3. Set up the frontend:
-    ```bash
-    # Open new terminal and navigate to frontend
-    cd frontend
 
-    # Install Node dependencies
-    npm install
+   ```bash
+   # Open new terminal and navigate to frontend
+   cd frontend
 
-    # Create or edit .env file with API URL
-    echo "NEXT_PUBLIC_API_URL=http://localhost:8000" > .env
+   # Install Node dependencies
+   npm install
 
-    # Start the Next.js dev server
-    npm run dev
-    ```
+   # Create or edit .env file with API URL
+   echo "NEXT_PUBLIC_API_URL=http://localhost:8000" > .env
+
+   # Start the Next.js dev server
+   npm run dev
+   ```
+
    The frontend will be running at `http://localhost:3000`
 
 ## Usage
 
 Once both servers are running:
+
 - Frontend: http://localhost:3000
 - Backend API: http://localhost:8000
 
-You can start searching for MOOCs by entering keywords in the search bar.
-
-
-
-
+You can start searching for MOOCs!
