@@ -24,7 +24,7 @@ llm = GoogleGenAI(
     temperature=0.0 
 )
 
-
+# JSON validator tool for agent
 def validate_json(json_string: str) -> str:
     '''Validates whether the given string is a valid JSON object. Returns 'Valid JSON' if valid, otherwise returns an error message.'''
     try:
