@@ -10,6 +10,9 @@ from llama_index.core.agent.workflow import (
 )
 import requests  
 
+# react agent docs https://docs.llamaindex.ai/en/stable/examples/agent/react_agent/
+
+
 # Define the recommend function
 def recommend(query: str):
     """Useful for recommending courses based on a user query. Returns a list of course dictionaries with name, topic, link, and provider."""
@@ -17,7 +20,7 @@ def recommend(query: str):
     try:
         # Call the API endpoint for recommendations using GET with query parameter
         response = requests.get(
-            "https://verbose-space-giggle-vj7g5xq596qfwv-8000.app.github.dev/",
+            "http://127.0.0.1:8000",
             params={"query": query},
             timeout=10
         )
@@ -46,6 +49,7 @@ recommendation_agent = ReActAgent(
     "1. Final output must be a Python list containing the original course dictionaries\n"
     "2. Each course dictionary must remain completely unchanged (same keys, values, and structure)\n"
     "3. The list order should represent the recommended learning sequence\n\n"
+    "4. DO NOT surround your final response with JSON code markers (BAD: ```json)"
 
     "Workflow:\n"
     "1. Analyze the user's learning goals and generate targeted search queries\n"
@@ -75,7 +79,9 @@ agent = AgentWorkflow(agents=[recommendation_agent], root_agent="course_recommen
 async def main():
     current_agent = None
     current_tool_calls = ""
-    handler = agent.run(user_msg="Learn physics e and m")
+    handler = agent.run(user_msg="Midieval literature")
+    #stream output
+    # code ripped from llamaindex docs
     async for event in handler.stream_events():
         if (
             hasattr(event, "current_agent_name")
@@ -106,6 +112,10 @@ async def main():
         elif isinstance(event, ToolCall):
             print(f"🔨 Calling Tool: {event.tool_name}")
             print(f"  With arguments: {event.tool_kwargs}")
+
+    #print final response
+    resp = await handler
+    print(resp)
 
 if __name__ == "__main__":
     asyncio.run(main())
