@@ -77,16 +77,16 @@ export default function Page() {
                     <Info></Info>
                   </Button>
                 </DrawerTrigger>
-                <DrawerContent>
+                <DrawerContent className="max-h-[75vh] mb-8">
                   <DrawerHeader>
                     <DrawerTitle>Recommender Agent Reasoning</DrawerTitle>
                     <DrawerDescription>
                       The direct output from the recommender LLM agent.
                     </DrawerDescription>
                   </DrawerHeader>
-                  <div className="p-4 text-gray-500 dark:text-gray-400">
-                    {streamedText || "No results yet."}
-                  </div>
+                  <pre className="whitespace-pre-wrap text-gray-500 dark:text-gray-400 p-8 mb-8 overflow-y-auto">
+                    {streamedText}
+                  </pre>
                 </DrawerContent>
               </Drawer>
             </div>
