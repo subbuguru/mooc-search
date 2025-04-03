@@ -11,6 +11,8 @@ from embeddings import recommend
 from dotenv import load_dotenv
 import os
 
+import json
+
 load_dotenv()
 api_key = os.getenv("GEMINI_API_KEY")
 
@@ -22,6 +24,15 @@ llm = GoogleGenAI(
     temperature=0.0 
 )
 
+
+def validate_json(json_string: str) -> str:
+    '''Validates whether the given string is a valid JSON object. Returns 'Valid JSON' if valid, otherwise returns an error message.'''
+    try:
+        # Attempt to parse the JSON string
+        json.loads(json_string)
+        return "Valid JSON"
+    except json.JSONDecodeError as e:
+        return f"Invalid JSON: {e}"
 
 # Create ReActAgent
 recommendation_agent = ReActAgent(
@@ -45,7 +56,7 @@ recommendation_agent = ReActAgent(
     "   - Skill level (beginner to advanced)\n"
     "   - Prerequisite relationships\n"
     "   - Topic progression\n"
-    "5. Return the final ordered list of course dictionaries CONVERTED TO A VALID JSON OBJECT\n\n"
+    "5. Return the final ordered list of course dictionaries. CONVERTED TO A VALID JSON OBJECT without Markdown identifiers (NO: ```json ```). Use the json tool to validate before your final response\n\n"
 
     "Important Rules:\n"
     "- NEVER modify any course dictionary contents\n"
@@ -53,7 +64,7 @@ recommendation_agent = ReActAgent(
     "- If courses need grouping, maintain them as separate dictionaries in sequence\n"
     "- If the API returns an empty result, try alternative query phrasings"
     ),
-    tools=[recommend],
+    tools=[recommend, validate_json],
     llm=llm,
 )
 # Create and run the workflow
