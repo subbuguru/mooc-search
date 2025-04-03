@@ -9,8 +9,7 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion"
-
+} from "@/components/ui/accordion";
 
 interface Course {
   id: string;
@@ -23,19 +22,20 @@ interface Course {
 export default function Page() {
   const [searchQuery, setSearchQuery] = useState("");
   const [results, setResults] = useState<Course[]>([]);
-  const resultsStream = useState("");
+  const [streamedText, setStreamedText] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const handleSearch = async (searchQuery: string) => {
-    console.log(apiUrl);
     if (!searchQuery.trim()) {
       return;
     }
 
     setIsLoading(true);
     setError(""); // Reset error state
+    setStreamedText(""); // Reset streamed text
+    setResults([]); // Reset results
 
     try {
       const response = await fetch(
@@ -46,20 +46,33 @@ export default function Page() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const json = await response.json();
+      const reader = response.body?.getReader();
+      const decoder = new TextDecoder("utf-8");
+      let done = false;
 
-      // Check if we got valid results
-      if (!Array.isArray(json)) {
-        throw new Error("Invalid response format");
+      while (!done) {
+        const { value, done: readerDone } = await reader?.read()!;
+        done = readerDone;
+        const chunk = decoder.decode(value, { stream: true });
+        setStreamedText((prev) => prev + chunk);
+
+        // Check if the final JSON is received
+        try {
+          const parsed = JSON.parse(chunk);
+          if (Array.isArray(parsed)) {
+            setResults(parsed);
+            break;
+          }
+        } catch {
+          // Ignore JSON parse errors for incomplete chunks
+        }
       }
-
-      setResults(json);
     } catch (e) {
       console.error("Search error:", e);
       setError("Search error");
-      setResults([]);
     } finally {
       setIsLoading(false);
+      console.log(results)
     }
   };
 
@@ -114,11 +127,11 @@ export default function Page() {
                 </h2>
                 {error != "" ? (
                   <div className="text-center mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
-                    An error occured: {error}
+                    An error occurred: {error}
                   </div>
                 ) : isLoading ? (
                   <div className="text-center mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
-                    Searching courses...
+                    {streamedText || "Searching courses..."}
                   </div>
                 ) : results.length > 0 ? (
                   <div className="grid gap-6">
