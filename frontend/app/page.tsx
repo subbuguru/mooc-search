@@ -17,6 +17,7 @@ import { Info } from "lucide-react";
 
 export default function Page() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const { results, streamedText, error, isLoading, handleSearch } = useSearch();
 
   return (
@@ -53,7 +54,10 @@ export default function Page() {
                   className="flex-1 text-gray-900 dark:text-white bg-transparent focus:ring-0"
                 />
                 <Button
-                  onClick={() => handleSearch(searchQuery)}
+                  onClick={() => {
+                    handleSearch(searchQuery);
+                    setIsDrawerOpen(true); // Open the drawer
+                  }}
                   disabled={isLoading}
                 >
                   {isLoading ? "Searching..." : "Search"}
@@ -67,7 +71,7 @@ export default function Page() {
               <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
                 Results
               </h2>
-              <Drawer>
+              <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
                 <DrawerTrigger>
                   <Button variant="outline" size="icon">
                     <Info></Info>
