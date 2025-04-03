@@ -5,6 +5,15 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useSearch } from "../lib/hooks/useSearch";
+import {
+  Drawer,
+  DrawerTrigger,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerDescription,
+} from "@/components/ui/drawer";
+import { Info } from "lucide-react";
 
 export default function Page() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -54,38 +63,54 @@ export default function Page() {
           </section>
 
           <section id="results" className="py-12 md:py-24">
-            <div className="flex justify-center w-full">
-              <div className="container">
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-12">
-                  Results
-                </h2>
-                {error != "" ? (
-                  <div className="text-center mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
-                    An error occurred: {error}
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+                Results
+              </h2>
+              <Drawer>
+                <DrawerTrigger>
+                  <Button variant="outline" size="icon">
+                    <Info></Info>
+                  </Button>
+                </DrawerTrigger>
+                <DrawerContent>
+                  <DrawerHeader>
+                    <DrawerTitle>Recommender Agent Reasoning</DrawerTitle>
+                    <DrawerDescription>
+                      The direct output from the recommender LLM agent.
+                    </DrawerDescription>
+                  </DrawerHeader>
+                  <div className="p-4 text-gray-500 dark:text-gray-400">
+                    {streamedText || "No results yet."}
                   </div>
-                ) : isLoading ? (
-                  <div className="text-center mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
-                    {streamedText || "Searching courses..."}
-                  </div>
-                ) : results.length > 0 ? (
-                  <div className="grid gap-6">
-                    {results.map((course, index) => (
-                      <CourseCard
-                        key={index}
-                        title={course.name}
-                        description={course.topic}
-                        link={course.link}
-                        tags={[course.provider]}
-                      />
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
-                    No results yet.
-                  </div>
-                )}
-              </div>
+                </DrawerContent>
+              </Drawer>
             </div>
+            {error != "" ? (
+              <div className="text-center mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
+                An error occurred: {error}
+              </div>
+            ) : isLoading ? (
+              <div className="text-center mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
+                {"Searching courses..."}
+              </div>
+            ) : results.length > 0 ? (
+              <div className="grid gap-6">
+                {results.map((course, index) => (
+                  <CourseCard
+                    key={index}
+                    title={course.name}
+                    description={course.topic}
+                    link={course.link}
+                    tags={[course.provider]}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="text-center mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
+                No results yet.
+              </div>
+            )}
           </section>
         </div>
       </main>
