@@ -33,9 +33,9 @@ export default function Page() {
     }
 
     setIsLoading(true);
-    setError(""); // Reset error state
-    setStreamedText(""); // Reset streamed text
-    setResults([]); // Reset results
+    setError("");
+    setStreamedText("");
+    setResults([]);
 
     try {
       const response = await fetch(
@@ -49,19 +49,31 @@ export default function Page() {
       const reader = response.body?.getReader();
       const decoder = new TextDecoder("utf-8");
       let done = false;
+      let fullText = "";
 
+      // Read the streamed response
       while (!done) {
-        const { value, done: readerDone } = await reader?.read()!;
+        const { value, done: readerDone } = await reader!.read();
         done = readerDone;
         const chunk = decoder.decode(value, { stream: true });
-        setStreamedText((prev) => prev + chunk);
+        fullText += chunk;
+        setStreamedText((prev) => prev + chunk); // Update streamed text for UI
+      }
+
+      // Extract the final JSON from the full text
+      const answerIndex = fullText.lastIndexOf("Answer:");
+      if (answerIndex !== -1) {
+        const jsonText = fullText.slice(answerIndex + 7).trim(); // Extract text after "Answer:"
+        const parsedResults = JSON.parse(jsonText); // Parse the JSON
+        setResults(parsedResults); // Update results state
+      } else {
+        throw new Error("Final JSON output not found in the response.");
       }
     } catch (e) {
       console.error("Search error:", e);
       setError("Search error");
     } finally {
       setIsLoading(false);
-      console.log(results)
     }
   };
 
@@ -123,16 +135,21 @@ export default function Page() {
                     {streamedText || "Searching courses..."}
                   </div>
                 ) : results.length > 0 ? (
-                  <div className="grid gap-6">
-                    {results.map((course, index) => (
-                      <CourseCard
-                        key={index}
-                        title={course.name}
-                        description={course.topic}
-                        link={course.link}
-                        tags={[course.provider]}
-                      />
-                    ))}
+                  <div>
+                    <div className="text-center mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
+                      {streamedText || "Searching courses..."}
+                      <div className="grid gap-6">
+                        {results.map((course, index) => (
+                          <CourseCard
+                            key={index}
+                            title={course.name}
+                            description={course.topic}
+                            link={course.link}
+                            tags={[course.provider]}
+                          />
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 ) : (
                   <div className="text-center">
