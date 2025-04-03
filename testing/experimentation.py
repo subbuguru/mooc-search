@@ -20,7 +20,7 @@ def recommend(query: str):
     try:
         # Call the API endpoint for recommendations using GET with query parameter
         response = requests.get(
-            "http://127.0.0.1:8000",
+            "",
             params={"query": query},
             timeout=10
         )
@@ -33,7 +33,7 @@ def recommend(query: str):
 # Initialize the LLM
 llm = GoogleGenAI(
     model="gemini-2.0-flash",
-    api_key="AIzaSyAG29iZsYDXK_kTH3HcOcXloCKnlLdhiRc",
+    api_key="",
     temperature=0.0 
 )
 

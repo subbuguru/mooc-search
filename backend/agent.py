@@ -8,11 +8,17 @@ from llama_index.core.agent.workflow import (
     ToolCallResult,
 )
 from embeddings import recommend
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+api_key = os.getenv("GEMINI_API_KEY")
+
 
 # Initialize the LLM
 llm = GoogleGenAI(
     model="gemini-2.0-flash",
-    api_key="AIzaSyAG29iZsYDXK_kTH3HcOcXloCKnlLdhiRc",
+    api_key=api_key,
     temperature=0.0 
 )
 
@@ -32,7 +38,7 @@ recommendation_agent = ReActAgent(
     "4. DO NOT surround your final response with JSON code markers (BAD: ```json)"
 
     "Workflow:\n"
-    "1. Analyze the user's learning goals and generate targeted search queries\n"
+    "1. Analyze the user's learning goals and generate targeted search queries, explaining your reasoning for each query\n"
     "2. Call the 'recommend' function multiple times if needed with different queries\n"
     "3. Collect all relevant courses while preserving their original dictionary structure\n"
     "4. Organize them into a logical sequence based on:\n"
