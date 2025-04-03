@@ -35,7 +35,7 @@ recommendation_agent = ReActAgent(
     "1. Final output must be a Python list containing the original course dictionaries\n"
     "2. Each course dictionary must remain completely unchanged (same keys, values, and structure)\n"
     "3. The list order should represent the recommended learning sequence\n\n"
-    "4. DO NOT surround your final response with JSON code markers (BAD: ```json)"
+    "4. DO NOT surround your final response with JSON code markers (BAD: ```json) The final answer should ONLY BE A VALID JSON OBJECT."
 
     "Workflow:\n"
     "1. Analyze the user's learning goals and generate targeted search queries, explaining your reasoning for each query\n"

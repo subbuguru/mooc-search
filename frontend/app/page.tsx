@@ -4,6 +4,13 @@ import CourseCard from "../components/course-card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+
 
 interface Course {
   id: string;
@@ -16,6 +23,7 @@ interface Course {
 export default function Page() {
   const [searchQuery, setSearchQuery] = useState("");
   const [results, setResults] = useState<Course[]>([]);
+  const resultsStream = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;

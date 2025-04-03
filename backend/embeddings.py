@@ -39,6 +39,6 @@ async def recommend(query: str):
     cleaned_input = clean_text(query)
     input_embedding = model.encode([cleaned_input])
     similarities = cosine_similarity(input_embedding, embeddings)[0]
-    top_indices = np.argsort(similarities)[-2:][::-1]
+    top_indices = np.argsort(similarities)[-3:][::-1]
     recommendations = courses.iloc[top_indices][['name', 'topic', 'link', 'provider']]
     return recommendations.replace({np.nan: ""}).to_dict('records')
