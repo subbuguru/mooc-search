@@ -55,17 +55,6 @@ export default function Page() {
         done = readerDone;
         const chunk = decoder.decode(value, { stream: true });
         setStreamedText((prev) => prev + chunk);
-
-        // Check if the final JSON is received
-        try {
-          const parsed = JSON.parse(chunk);
-          if (Array.isArray(parsed)) {
-            setResults(parsed);
-            break;
-          }
-        } catch {
-          // Ignore JSON parse errors for incomplete chunks
-        }
       }
     } catch (e) {
       console.error("Search error:", e);
