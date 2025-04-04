@@ -52,12 +52,11 @@ recommendation_agent = ReActAgent(
     "1. Analyze the user's learning goals and generate targeted search queries, explaining your reasoning for each query\n"
     "2. Call the 'recommend' function multiple times if needed with different queries\n"
     "3. Collect all relevant courses while preserving their original dictionary structure\n"
-    "4a. If the user has requested an ordered sequence, organize them into a logical sequence in the specified number based on:\n"
+    "4. Organize them into a logical sequence based on:\n"
     "   - Skill level (beginner to advanced)\n"
     "   - Prerequisite relationships\n"
-    "   - Topic progression\n" \
-    "4b. Otherwise provide a list of relevant courses that aren't specifically ordered in the specified nuber if the user has requested an unordered list.\n"
-    "5. Return the final list of course dictionaries CONVERTED TO A VALID JSON OBJECT without Markdown identifiers (NO: ```json ```). Use the json tool to validate before your final response\n\n"
+    "   - Topic progression\n"
+    "5. Return the final ordered list of course dictionaries. CONVERTED TO A VALID JSON OBJECT without Markdown identifiers (NO: ```json ```). Use the json tool to validate before your final response\n\n"
 
     "Important Rules:\n"
     "- NEVER modify any course dictionary contents\n"
@@ -71,16 +70,10 @@ recommendation_agent = ReActAgent(
 # Create and run the workflow
 agent = AgentWorkflow(agents=[recommendation_agent], root_agent="course_recommender")
 
-# utility function to concatenate recommendation type and number to prompt.
-def concatenate_prompt(query: str, num_recommendations: int, order_type: str):
-    return f"The user's request is: {query}. The user would like {num_recommendations} recommendations in an {order_type} form."
-
 # Define a generator for streaming agent events
-async def stream_agent_events(query: str, num_recommendations: int, order_type: str):
+async def stream_agent_events(query: str):
     current_agent = None
-    handler = agent.run(
-        user_msg=concatenate_prompt(query, num_recommendations, order_type)
-    )
+    handler = agent.run(user_msg=query)
 
     async for event in handler.stream_events():
         if (
@@ -104,3 +97,4 @@ async def stream_agent_events(query: str, num_recommendations: int, order_type: 
         elif isinstance(event, ToolCall):
             yield f"🔨 Calling Tool: {event.tool_name}\n"
             yield f"  With arguments: {event.tool_kwargs}\n"
+

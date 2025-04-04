@@ -15,11 +15,7 @@ export function useSearch() {
   const [isLoading, setIsLoading] = useState(false);
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-  const handleSearch = async (
-    searchQuery: string,
-    numRecommendations: number,
-    orderType: string
-  ) => {
+  const handleSearch = async (searchQuery: string) => {
     if (!searchQuery.trim()) {
       return;
     }
@@ -31,9 +27,7 @@ export function useSearch() {
 
     try {
       const response = await fetch(
-        `${apiUrl}?query=${encodeURIComponent(
-          searchQuery
-        )}&numRecommendations=${numRecommendations}&orderType=${orderType}`
+        `${apiUrl}?query=${encodeURIComponent(searchQuery)}`
       );
 
       if (!response.ok) {
