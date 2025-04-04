@@ -20,8 +20,8 @@ app.add_middleware(
 
 # Recommendation endpoint
 @app.get("/")
-async def recommend_stream(query: str):
+async def recommend_stream(query: str, numRecommendations: int = 5, orderType: str = "ordered"):
     async def event_stream():
-        async for event in stream_agent_events(query):
+        async for event in stream_agent_events(query, numRecommendations, orderType):
             yield event
     return StreamingResponse(event_stream(), media_type="text/plain")
