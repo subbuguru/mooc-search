@@ -53,13 +53,9 @@ export function useSearch() {
         setStreamedText((prev) => prev + chunk);
       }
 
-      console.log("Full response:", fullText);
-
       const answerIndex = fullText.lastIndexOf("Answer:");
       if (answerIndex !== -1) {
         const jsonText = fullText.slice(answerIndex + 7).trim();
-        console.log("Extracted JSON text:", jsonText);
-
         try {
           const parsedResults = JSON.parse(jsonText);
           setResults(parsedResults);
