@@ -1,8 +1,13 @@
 # MOOC Search
 
-## Image
+<table>
+  <tr>
+    <td><img width="2284" alt="mooc-search copy" src="https://github.com/user-attachments/assets/330c865f-aa34-473a-8005-43a2e22e3ca5" /></td>
+    <td><img width="2233" alt="image" src="https://github.com/user-attachments/assets/f185faa4-4b54-432e-bde2-533ea0e98210" /></td>
+  </tr>
+</table>
 
-<img width="2284" alt="mooc-search copy" src="https://github.com/user-attachments/assets/330c865f-aa34-473a-8005-43a2e22e3ca5" />
+
 
 ## Overview
 
