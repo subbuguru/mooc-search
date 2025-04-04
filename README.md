@@ -6,7 +6,12 @@
 
 ## Overview
 
-MOOC Search is a project designed to help users find Massive Open Online Courses (MOOCs) from various providers. The project utilizes vector embedding semantic search called as a tool by a LlamaIndex agent powered by Google's Gemini API. (Another LLM can be swapped in based on LLamaIndex documentation.) This is a project built with FastAPI and Next.js.
+MOOC Search is a platform that helps users discover Massive Open Online Courses (MOOCs) from various providers.
+
+- The project combines several online course datasets obtained from Kaggle, processes them using pandas, and generates embeddings with BERT.
+- These embeddings are exported as a CSV file and used in a Python function that uses cosine similarity to compare a query string with relevant courses.
+- This function serves as a tool for the LlamaIndex agent, which powers and oversees the recommendation system.
+- The project is built using FastAPI for the backend and Next.js for the frontend.
 
 ## Installation
 
