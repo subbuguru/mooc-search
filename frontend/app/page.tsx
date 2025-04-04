@@ -25,6 +25,7 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
+import Header from "@/components/header";
 
 export default function Page() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -35,16 +36,7 @@ export default function Page() {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="flex h-14 items-center justify-between">
-          <div className="container">
-            <div className="px-8 hidden md:flex"></div>
-          </div>
-          <div className="px-8">
-            <ThemeToggle />
-          </div>
-        </div>
-      </header>
+      <Header></Header>
 
       <main className="flex justify-center w-full">
         <div className="container px-4 md:px-6">
