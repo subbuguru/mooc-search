@@ -137,9 +137,9 @@ export default function Page() {
                 Results
               </h2>
               <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
-                <DrawerTrigger>
+                <DrawerTrigger asChild>
                   <Button variant="outline" size="icon">
-                    <Info></Info>
+                    <Info />
                   </Button>
                 </DrawerTrigger>
                 <DrawerContent className="max-h-[75vh] mb-8">
