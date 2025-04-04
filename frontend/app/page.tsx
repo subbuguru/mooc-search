@@ -3,7 +3,6 @@ import { useState } from "react";
 import CourseCard from "../components/course-card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { useSearch } from "../lib/hooks/useSearch";
 import {
   Drawer,
@@ -36,7 +35,7 @@ export default function Page() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header></Header>
+      <Header />
 
       <main className="flex justify-center w-full">
         <div className="container px-4 md:px-6">
