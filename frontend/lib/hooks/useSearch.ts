@@ -56,7 +56,6 @@ export function useSearch() {
       const answerIndex = fullText.lastIndexOf("Answer:");
       if (answerIndex !== -1) {
         const jsonText = fullText.slice(answerIndex + 7).trim();
-        console.log(jsonText);
         try {
           const parsedResults = JSON.parse(jsonText);
           setResults(parsedResults);
