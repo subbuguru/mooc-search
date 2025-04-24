@@ -56,11 +56,12 @@ export function useSearch() {
       const answerIndex = fullText.lastIndexOf("Answer:");
       if (answerIndex !== -1) {
         const jsonText = fullText.slice(answerIndex + 7).trim();
+        console.log(jsonText);
         try {
           const parsedResults = JSON.parse(jsonText);
           setResults(parsedResults);
         } catch (e) {
-          console.error("JSON parsing error:", e);
+          console.error("JSON parsing error:", jsonText, e);
           throw new Error("Invalid JSON format in the response.");
         }
       } else {
