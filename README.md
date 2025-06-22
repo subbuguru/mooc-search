@@ -13,14 +13,14 @@
 
 MOOC Search is a platform that helps users discover Massive Open Online Courses (MOOCs) from various providers.
 
-- The project combines several online course datasets obtained from Kaggle, processes them using pandas, and generates embeddings with BERT.
-- These embeddings are exported as a CSV file and used in a Python function that uses cosine similarity to compare a query string with relevant courses.
-- This function serves as a tool for the LlamaIndex agent, which powers and oversees the recommendation system.
-- The project is built using FastAPI for the backend and Next.js for the frontend.
+- Combines multiple MOOC datasets (from Kaggle) and processes them using pandas.
+- Generates course embeddings with BERT and exports them as a CSV.
+- Uses cosine similarity to match user queries with relevant courses.
+- Powered by a FastAPI backend, a Next.js frontend, and an agentic recommendation system (LlamaIndex).
 
 ## Why I Built This
 
-Ever since COVID, MOOCs have become all the rage to learn things online and for free. However, there are simply so many of them and often times people quit before they even start due to decision fatigue. This project aims to solve that fatigue through agentic means.
+Ever since COVID, MOOCs have become all the rage to learn things online and for free. However, there are simply so many of them and often times people quit before they even start due to decision fatigue.
 Personally, I built this project both for my own utility and to learn more about AI agents and how they can be integrated into fields such as education.
 
 ## Installation
