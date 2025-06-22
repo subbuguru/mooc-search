@@ -80,9 +80,5 @@ Once both servers are running:
 You can start searching for MOOCs!
 
 
-## License
-
-Distributed under the MIT license. See the LICENSE file for more information.
-
 
 
