@@ -5,10 +5,10 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerDescription,
-} from "@/components/ui/drawer";
-import { Button } from "@/components/ui/button";
-import { Info } from "lucide-react";
-import CourseCard from "@/components/course-card";
+} from '@/components/ui/drawer';
+import { Button } from '@/components/ui/button';
+import { Info } from 'lucide-react';
+import CourseCard from '@/components/course-card';
 
 interface ResultsProps {
   results: Array<{
@@ -23,8 +23,6 @@ interface ResultsProps {
   isDrawerOpen: boolean;
   setIsDrawerOpen: (open: boolean) => void;
 }
-
-// Results function component that displays the streamed output passed down from page.tsx in a drawer and the final course array, passed down as the results prop
 
 export default function Results({
   results,

@@ -1,28 +1,28 @@
-"use client";
-import { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { useSearch } from "../lib/hooks/useSearch";
+'use client';
+import { useState } from 'react';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { useSearch } from '../lib/hooks/useSearch';
 import {
   Popover,
   PopoverTrigger,
   PopoverContent,
-} from "@/components/ui/popover";
+} from '@/components/ui/popover';
 import {
   Select,
   SelectTrigger,
   SelectContent,
   SelectItem,
-} from "@/components/ui/select";
-import Header from "@/components/header";
-import Footer from "@/components/footer";
-import Results from "@/components/results";
+} from '@/components/ui/select';
+import Header from '@/components/header';
+import Footer from '@/components/footer';
+import Results from '@/components/results';
 
 export default function Page() {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [numRecommendations, setNumRecommendations] = useState(3);
-  const [orderType, setOrderType] = useState("Ordered");
+  const [orderType, setOrderType] = useState('Ordered');
   const { results, streamedText, error, isLoading, handleSearch } = useSearch();
 
   return (
@@ -108,7 +108,7 @@ export default function Page() {
                   }}
                   disabled={isLoading}
                 >
-                  {isLoading ? "Searching..." : "Search"}
+                  {isLoading ? 'Searching...' : 'Search'}
                 </Button>
               </div>
             </div>
