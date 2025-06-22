@@ -18,6 +18,11 @@ MOOC Search is a platform that helps users discover Massive Open Online Courses 
 - This function serves as a tool for the LlamaIndex agent, which powers and oversees the recommendation system.
 - The project is built using FastAPI for the backend and Next.js for the frontend.
 
+## Why I Built This
+
+Ever since COVID, MOOCs have become all the rage to learn things online and for free. However, there are simply so many of them and often times people quit before they even start due to decision fatigue. This project aims to solve that fatigue through agentic means.
+Personally, I built this project both for my own utility and to learn more about AI agents and how they can be integrated into fields such as education.
+
 ## Installation
 
 To install and run the project locally, follow these steps:
@@ -73,3 +78,11 @@ Once both servers are running:
 - Backend API: http://localhost:8000
 
 You can start searching for MOOCs!
+
+
+## License
+
+Distributed under the MIT license. See the LICENSE file for more information.
+
+
+
