@@ -8,3 +8,4 @@ nltk
 kaleido
 llama-index
 llama-index-llms-gemini
+llama-index-llms-google-genai
